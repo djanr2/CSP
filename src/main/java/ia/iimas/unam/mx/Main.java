@@ -24,9 +24,9 @@ public class Main {
 
         ICSPAlgortithm backtracking = new BacktrackSolution();
 
-        ordering.setCsp(mcProblem);
+        backtracking.setCsp(mcProblem);
 
-        ordering.run();
+        backtracking.run();
 
     }
 

@@ -4,7 +4,6 @@ import ia.iimas.unam.mx.model.IConstraint;
 import ia.iimas.unam.mx.model.IDomain;
 import ia.iimas.unam.mx.model.IVariable;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -112,20 +111,20 @@ public class Country implements IVariable{
     @Override
     public String toString(){
         return "{"+this.getCountry()+":"+((this.color!=null)?this.color:"")+"}";
-        //return "{"+this.getCountry()+":"+((this.color!=null)?this.color:"")+"}->"+this.domain+"";
+        /*return "{"+this.getCountry()+":"+((this.color!=null)?this.color:"")+"}->"+this.domain+"";*/
     }
 
     public boolean setColor(IDomain color){
-        if (this.domain.contains(color)){
+        if (color==null){
+            this.color = null;
+        }else if (this.domain.contains(color)){
             this.color = color;
             removeDomainFromNeighbors(color);
-            removeNighborfromNeighbors(this);
             this.removeDomainElement(color);
-            //this.domain.clear();
             return true;
-        }else{
-            return false;
         }
+            return false;
+
     }
 
     private void removeNighborfromNeighbors(IVariable neighbor) {
@@ -138,8 +137,13 @@ public class Country implements IVariable{
     }
 
     public void removeColor(){
-        this.domain.add(this.color);
-        this.color = null;
+        IDomain color = this.color;
+        if (this.color != null){
+            this.domain.add(this.color);
+            this.color = null;
+            addDomainToNeighbors(color);
+
+        }
     }
 
 
@@ -147,8 +151,15 @@ public class Country implements IVariable{
     private void removeDomainFromNeighbors(IDomain color){
         for(IVariable node: this.neighbors){
             Country country = (Country) node;
-            if(country.getColor()==null){
                 country.removeDomainElement(color);
+        }
+    }
+
+    private void addDomainToNeighbors(IDomain color){
+        for(IVariable node: this.neighbors){
+            Country country = (Country) node;
+            if(!isNeighborHasAssignedDomain(color, country.getNeighbors())){
+                country.addDomainElement(color);
             }
         }
     }
@@ -183,6 +194,17 @@ public class Country implements IVariable{
             }
         }
         return null;
+    }
+
+    private boolean isNeighborHasAssignedDomain(IDomain color,Set<IVariable> neighbors){
+
+        for (IVariable var: neighbors){
+            Country c = (Country) var;
+            if (c.getColor()==color){
+                return true;
+            }
+        }
+        return false;
     }
 
 

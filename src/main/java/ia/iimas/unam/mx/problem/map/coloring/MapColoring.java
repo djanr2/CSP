@@ -32,7 +32,7 @@ public class MapColoring extends SourceFromCode {
             switch (country.getCountry()){
                 case WA:
                      country.addNeighbor(Source.getCountry(NT));
-                     country.addNeighbor(Source.getCountry(SA));
+                    country.addNeighbor(Source.getCountry(SA));
                 break;
                 case  NT:
                      country.addNeighbor(Source.getCountry(WA));
