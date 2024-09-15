@@ -2,6 +2,7 @@ package ia.iimas.unam.mx.problem.map.coloring;
 
 import ia.iimas.unam.mx.model.IConstraint;
 import ia.iimas.unam.mx.model.IDomain;
+import ia.iimas.unam.mx.model.ISource;
 import ia.iimas.unam.mx.model.IVariable;
 
 
@@ -9,7 +10,7 @@ import java.util.HashSet;
 
 import java.util.Set;
 
-public class Source {
+public class Source implements ISource {
 
     private static Set<IDomain> domain;
     private static Set<IVariable> variables;

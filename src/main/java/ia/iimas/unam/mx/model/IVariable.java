@@ -1,6 +1,7 @@
 package ia.iimas.unam.mx.model;
 
-import java.util.List;
+import ia.iimas.unam.mx.problem.map.coloring.Country;
+
 import java.util.Set;
 
 public interface IVariable{
@@ -25,8 +26,10 @@ public interface IVariable{
 
     boolean addNeighbor(IVariable element);
 
-    boolean removenNighbor(IVariable element);
+    boolean removeNighbor(IVariable element);
 
+    int countLegalValues();
 
+    Country cloneElement();
 
 }

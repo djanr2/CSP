@@ -4,11 +4,13 @@ import ia.iimas.unam.mx.model.IConstraint;
 import ia.iimas.unam.mx.model.IDomain;
 import ia.iimas.unam.mx.model.IVariable;
 
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 
-public class Country implements IVariable {
+public class Country implements IVariable{
 
     private IDomain color;
 
@@ -74,14 +76,33 @@ public class Country implements IVariable {
         return this.neighbors;
     }
 
+    public IDomain getColor() {
+        return color;
+    }
+
     @Override
     public boolean addNeighbor(IVariable neighbor) {
         return this.neighbors.add(neighbor);
     }
 
     @Override
-    public boolean removenNighbor(IVariable neighbor) {
+    public boolean removeNighbor(IVariable neighbor) {
         return this.neighbors.remove(neighbor);
+    }
+
+    @Override
+    public int countLegalValues() {
+        return this.domain.size();
+    }
+
+    @Override
+    public Country cloneElement(){
+        Country c = new Country(this.country);
+        c.setDomain(new HashSet<>(this.domain));
+        c.setNeighbors(new HashSet<>(this.neighbors));
+        c.setConstrains(new HashSet<>(this.constraints));
+        c.setColor(this.color);
+        return c;
     }
 
     public CountryEnum getCountry() {
@@ -90,25 +111,79 @@ public class Country implements IVariable {
 
     @Override
     public String toString(){
-        return "{"+this.getCountry()+":"+((this.color!=null)?this.color:"")+"}->"+this.domain+"";
+        return "{"+this.getCountry()+":"+((this.color!=null)?this.color:"")+"}";
+        //return "{"+this.getCountry()+":"+((this.color!=null)?this.color:"")+"}->"+this.domain+"";
     }
 
-    public void setColor(IDomain color){
+    public boolean setColor(IDomain color){
         if (this.domain.contains(color)){
             this.color = color;
             removeDomainFromNeighbors(color);
-            this.domain.clear();
+            removeNighborfromNeighbors(this);
+            this.removeDomainElement(color);
+            //this.domain.clear();
+            return true;
         }else{
-            if(this.color==null){
-                throw new RuntimeException("No hay valores en el dominio para este pais");
+            return false;
+        }
+    }
+
+    private void removeNighborfromNeighbors(IVariable neighbor) {
+        for(IVariable node: this.neighbors){
+            Country country = (Country) node;
+            if(country.getColor()==null){
+                country.removeNighbor(neighbor);
             }
         }
     }
 
+    public void removeColor(){
+        this.domain.add(this.color);
+        this.color = null;
+    }
+
+
+
     private void removeDomainFromNeighbors(IDomain color){
         for(IVariable node: this.neighbors){
             Country country = (Country) node;
-            country.removeDomainElement(color);
+            if(country.getColor()==null){
+                country.removeDomainElement(color);
+            }
         }
     }
+
+    public boolean hasConstraintNeighbors(IConstraint constraint){
+
+        for (IVariable var: this.neighbors){
+            Country neighbor = (Country) var;
+
+            if(constraint.areConstrained(this, neighbor)){
+                if(this.getColor() != null &&
+                   neighbor.getColor() != null &&
+                   this.getColor().equals(neighbor.getColor())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public IDomain getRandomColor(){
+        if (this.domain.size()>0){
+            int size = this.domain.size();
+
+            int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+            int i = 0;
+            for(IDomain obj : this.domain)
+            {
+                if (i == item)
+                    return obj;
+                i++;
+            }
+        }
+        return null;
+    }
+
+
 }
