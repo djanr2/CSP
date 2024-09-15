@@ -5,7 +5,6 @@ import ia.iimas.unam.mx.model.IDomain;
 import ia.iimas.unam.mx.model.IVariable;
 import ia.iimas.unam.mx.model.SourceFromCode;
 
-import static ia.iimas.unam.mx.problem.map.coloring.Color.GREEN;
 import static ia.iimas.unam.mx.problem.map.coloring.CountryEnum.*;
 
 

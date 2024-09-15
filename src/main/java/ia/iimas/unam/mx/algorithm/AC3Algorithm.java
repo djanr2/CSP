@@ -21,7 +21,6 @@ public abstract class AC3Algorithm implements ICSPAlgortithm{
     protected static void printCountry(IVariable country){
         Country c = (Country) country;
         System.out.println(c);
-        // System.out.println(c.getNeighbors());
         System.out.println();
     }
 

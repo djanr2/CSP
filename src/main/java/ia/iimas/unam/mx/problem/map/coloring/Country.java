@@ -111,7 +111,6 @@ public class Country implements IVariable{
     @Override
     public String toString(){
         return "{"+this.getCountry()+":"+((this.color!=null)?this.color:"")+"}";
-        /*return "{"+this.getCountry()+":"+((this.color!=null)?this.color:"")+"}->"+this.domain+"";*/
     }
 
     public boolean setColor(IDomain color){

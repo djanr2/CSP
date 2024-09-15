@@ -31,7 +31,6 @@ public class BacktrackSolution  extends BacktrackingAlgorithm {
 
         System.out.println(countries_list);
         System.out.println();
-        System.out.println();
 
        backtrack(countries_list.get(0), new HashSet<>());
 
@@ -43,42 +42,19 @@ public class BacktrackSolution  extends BacktrackingAlgorithm {
 
         Country country = (Country) current_country;
 
-        /*System.out.println("------------------>\t"+country+" Possible Values: "+country.getDomain());*/
         for(IDomain color : cloneDomain(country.getDomain())){
-            /*System.out.println(">"+country+" Possible Values iteration: "+country.getDomain());*/
             if(country.setColor(color)){
                 index = countries_list.indexOf(country);
                 index++;
                 solution.add(country);
-                /*System.out.println(country+"");*/
-                for (IVariable cty: country.getNeighbors()){
-                    Country co= (Country)cty;
-                    /*System.out.println("\t"+co);*/
-                }
-                /*System.out.println(":>"+solution);*/
                 if(index<countries_list.size()) {
                     backtrack(countries_list.get(index), solution);
-                    /*System.out.println("<"+country);*/
                     country.removeColor();
-
-                    for (IVariable cty: country.getNeighbors()){
-                        Country co= (Country)cty;
-                        /*System.out.println("\t"+co);*/
-                    }
                     solution.remove(country);
-                    /*System.out.println(":<"+solution);*/
                 }else{
-                    /*System.out.print("Solution: ");*/
                     System.out.println(solution);
-                    /*System.out.println("<"+country);*/
                     country.removeColor();
-
-                    for (IVariable cty: country.getNeighbors()){
-                        Country co= (Country)cty;
-                        /*System.out.println("\t"+co);*/
-                    }
                     solution.remove(country);
-                    /*System.out.println(":<"+solution);*/
                 }
             }
         }
@@ -88,15 +64,6 @@ public class BacktrackSolution  extends BacktrackingAlgorithm {
         return new HashSet<>(domain);
     }
 
-    private HashSet<IVariable> cloneNeighbors(Set<IVariable> neighbors){
-        HashSet<IVariable> clone = new HashSet<>();
-        for (IVariable cty:
-            neighbors){
-            clone.add(cty.cloneElement());
-        }
-        return clone;
-    }
-
     public static void click(){
         try{
             System.in.read();
@@ -104,6 +71,5 @@ public class BacktrackSolution  extends BacktrackingAlgorithm {
             throw new RuntimeException(e);
         }
     }
-
 
 }

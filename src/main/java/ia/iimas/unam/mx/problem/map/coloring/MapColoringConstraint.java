@@ -4,8 +4,6 @@ package ia.iimas.unam.mx.problem.map.coloring;
 import ia.iimas.unam.mx.model.IConstraint;
 import ia.iimas.unam.mx.model.IVariable;
 
-import java.util.ArrayList;
-
 
 public enum MapColoringConstraint implements IConstraint {
     DIFFERENT_COLOR;
